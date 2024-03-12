@@ -17,13 +17,11 @@ import Signup from './src/pages/SignUp';
 
 const RPM_TARGET = 'readyplayerme';
 
-// Replace with your custom subdomain
 const subdomain = 'api-avatar';
 
 export default function App() {
   const webView = useRef<WebView | null>();
   const url = useAvatarCreatorUrl(subdomain, {});
-
   const [avatarId, setAvatarId] = useState<string>();
   const [showUserUpdatedAlert, setShowUserUpdatedAlert] = useState(false);
   const [showLogin, setShowLogin] = useState<boolean>(true);

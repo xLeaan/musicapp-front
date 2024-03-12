@@ -5,7 +5,7 @@ export default class App extends React.Component {
   render() {
     return (
       <WebView 
-        source={{ uri: 'https://demo.readyplayer.me/avatar' }}
+        source={{ uri: 'https://api-avatar.readyplayer.me/avatar' }}
         onMessage={(event) => {
           alert(`Avatar 3D model can be downloaded from: ${event.nativeEvent.data}`)
         }}
