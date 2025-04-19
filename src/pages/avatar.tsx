@@ -2,6 +2,7 @@ import { useState, type FC, useEffect } from 'react';
 import { Button, Image, ImageStyle, StyleProp, StyleSheet, Text, View } from 'react-native';
 import { use2dImageUrl } from '../hooks/use-2d-image-url';
 import { Avatar2DConfig } from '../types';
+import React from 'react';
 
 interface AvatarPageProps {
   avatarId: string;
