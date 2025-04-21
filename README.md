@@ -1,4 +1,5 @@
 ```
 npm install
-expo start
+npm start
+npm install @tsconfig/react-native
 ```

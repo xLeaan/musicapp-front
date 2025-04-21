@@ -1,107 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react';
-import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { useAvatarCreatorUrl } from './src/hooks/use-avatar-creator-url';
-import {
-  AssetUnlockedEvent,
-  AvatarCreatorEvent,
-  AvatarExportedEvent,
-  UserAuthorizedEvent,
-  UserSetEvent,
-  UserUpdatedEvent,
-  UserLoggedOutEvent
-} from './src';
-import { Alert } from 'react-native';
-import AvatarPage from './src/pages/avatar';
-import Login from './src/pages/Login';
-import Signup from './src/pages/SignUp';
-
-const RPM_TARGET = 'readyplayerme';
-
-const subdomain = 'api-avatar';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Asegúrate de que AsyncStorage esté importado correctamente
+import FirstScreen from './src/pages/FirstScreen';
+import Login from './src/pages/Auth/Login';
+import Signup from './src/pages/Auth/SignUp';
 
 export default function App() {
-  const webView = useRef<WebView | null>();
-  const url = useAvatarCreatorUrl(subdomain, {});
-  const [avatarId, setAvatarId] = useState<string>();
-  const [showUserUpdatedAlert, setShowUserUpdatedAlert] = useState(false);
-  const [showLogin, setShowLogin] = useState<boolean>(true);
+  const [showLogin, setShowLogin] = useState<boolean>(false);
   const [showSignup, setShowSignup] = useState<boolean>(false);
 
-  const supportedEvents = {
-    'v1.avatar.exported': onAvatarExported,
-    'v1.user.set': onUserSet,
-    'v1.user.authorized': onUserAuthorized,
-    'v1.asset.unlock': onAssetUnlocked,
-    'v1.user.updated': onUserUpdated,
-    'v1.user.logout': onUserLoggedOut
-  } as Record<string, any>;
-
-
-  function onAvatarExported(message: AvatarExportedEvent) {
-    setAvatarId(message.data.avatarId);
-  }
-
-  function onAssetUnlocked(message: AssetUnlockedEvent) {
-    Alert.alert(`Asset Unlocked | Asset ID = ${message.data?.assetId}`);
-  }
-
-  function onUserAuthorized(message: UserAuthorizedEvent) {
-    Alert.alert(`User Authorized | User ID = ${message.data?.id}`);
-  }
-
-  function onUserSet(message: UserSetEvent) {
-    Alert.alert(`User Set | User ID = ${message.data?.id}`);
-  }
-
-  function onUserUpdated(message: UserUpdatedEvent) {
-    if (showUserUpdatedAlert) {
-      Alert.alert(`User Updated | User ID = ${message.data?.id}`);
+  // Función para verificar si el usuario ya está logueado
+  const checkUserLoggedIn = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token'); // Verificamos si existe el token
+      if (token) {
+        setShowLogin(false); // Si hay un token, mostramos la pantalla de FirstScreen
+      } else {
+        setShowLogin(true); // Si no hay token, mostramos el login
+      }
+    } catch (error) {
+      console.error("Error checking user login status:", error);
+      setShowLogin(true); // Si ocurre un error, mostramos el login por defecto
     }
-  }
+  };
 
-  function onUserLoggedOut(message: UserLoggedOutEvent) {
-    Alert.alert(`User Logged Out`);
-  }
-
-  function onWebViewLoaded() {
-    webView.current?.postMessage(
-      JSON.stringify({
-        target: 'readyplayerme',
-        type: 'subscribe',
-        eventName: 'v1.**'
-      })
-    );
-  }
-
-  function onMessageReceived(message: WebViewMessageEvent) {
-    const data = message.nativeEvent.data;
-    const event = JSON.parse(data) as AvatarCreatorEvent;
-
-    if (event?.source !== RPM_TARGET || !event.eventName) {
-      return;
+  // Función para cerrar sesión
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token'); // Eliminar el token de AsyncStorage
+      setShowLogin(true); // Volver a mostrar el login
+    } catch (error) {
+      console.error("Error during logout:", error);
     }
+  };
 
-    supportedEvents[event.eventName]?.(event);
-  }
+  // Efecto para verificar el estado de login al iniciar la aplicación
+  useEffect(() => {
+    checkUserLoggedIn();
+  }, []); // Se ejecuta solo una vez al iniciar
 
   function handleLogin() {
-    // Aquí podrías hacer alguna validación o llamar a una función de autenticación en el backend
-    setShowLogin(false);
+    setShowLogin(false); // Cuando el usuario se loguea, ocultamos la pantalla de login
   }
 
   function handleSignup() {
     setShowSignup(true);
-    setShowLogin(false);
+    setShowLogin(false); // Al registrarse, ocultamos el login
   }
 
   function onBackToLogin() {
     setShowSignup(false);
-    setShowLogin(true);
-  }
-
-  function handleLogout() {
-    setShowLogin(true);
-    setAvatarId(undefined);
+    setShowLogin(true); // Volver al login desde el registro
   }
 
   if (showLogin) {
@@ -112,19 +60,5 @@ export default function App() {
     return <Signup onSignup={handleSignup} onLogin={onBackToLogin} />;
   }
 
-  if (avatarId) {
-    return <AvatarPage clearAvatar={() => setAvatarId('')} avatarId={avatarId}></AvatarPage>;
-  }
-
-  return (
-      <WebView
-        ref={webView}
-        style={{ marginTop: 30 }}
-        onLoad={onWebViewLoaded}
-        onMessage={onMessageReceived}
-        source={{ uri: url }}
-        />
-      
-    
-  );
+  return <FirstScreen onLogout={handleLogout} />;
 }
