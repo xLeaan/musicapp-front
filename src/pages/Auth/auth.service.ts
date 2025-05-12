@@ -1,6 +1,7 @@
 import { API_URL } from '@env';
 import { User } from '../../interfaces/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 export async function authService(user: User) {
     try {
@@ -18,12 +19,12 @@ export async function authService(user: User) {
         return await response.json();
         
     } catch (error) {
-        console.error("Error al registrar un usuario:", error);
         throw error;
     }
 }
 
 export async function loginService(email: string, contrasena: string) {
+
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
@@ -38,6 +39,11 @@ export async function loginService(email: string, contrasena: string) {
       if (response.ok) {
         // Si la respuesta es exitosa, almacenamos el token en AsyncStorage
         if (data.token) {
+          Toast.show({
+            type: 'success',
+            text1: 'Login exitoso'
+          });
+
           console.log("Usuario logueado:", data.user, "token:", data.token);
           await AsyncStorage.setItem('token', data.token);
           return data.user; 

@@ -3,6 +3,7 @@ import { View, TextInput, Button, Touchable, TouchableOpacity, Image } from 'rea
 import {StyleSheet, Text} from 'react-native';
 import { UserLoginProps } from '../../interfaces/user';
 import { loginService } from './auth.service';
+import Toast from 'react-native-toast-message';
 
 
 const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
@@ -12,20 +13,40 @@ const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
   const [isError, setIsError] = useState(false);
   
 
-  async function handleLogin() {
-    try {
-      const user = { email, contrasena };
-      const response = await loginService(email, contrasena);
-      setMessage("Login exitoso!");
-      setIsError(false);
-      onLogin(user);
-    } catch (error) {
-      setMessage('Error al loguear');
-      console.log("Error al loguear usuario:", error);
-      setIsError(true);
-    }
+  const showToast = () => {
+        Toast.show({
+          type: 'success',
+          text1: 'Hello',
+          text2: 'This is some something 👋'
+        });
   }
 
+  async function handleLogin() {
+    try {
+      const user = await loginService(email, contrasena);
+      
+    if (user) {
+
+      Toast.show({
+            type: 'success',
+            text1: 'Login exitoso',
+            text2: 'Bienvenido/a ' + user.nombre,
+      });
+
+      setIsError(false);
+      onLogin(user); 
+    } else {
+      setMessage("Error al intentar iniciar sesión.");
+      setIsError(true);
+    }
+  } catch (error) {
+    setMessage("Error en la solicitud de login.");
+    console.log("Error:", error);
+    setIsError(true);
+  }
+}
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>

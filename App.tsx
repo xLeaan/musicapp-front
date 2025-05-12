@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Asegúrate de que AsyncStorage esté importado correctamente
 import FirstScreen from './src/pages/FirstScreen';
+import AdminScreen from './src/pages/AdminScreen';
 import Login from './src/pages/Auth/Login';
 import Signup from './src/pages/Auth/SignUp';
+import { User } from './src/interfaces/user'; 
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const [showLogin, setShowLogin] = useState<boolean>(false);
-  const [showSignup, setShowSignup] = useState<boolean>(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   // Función para verificar si el usuario ya está logueado
   const checkUserLoggedIn = async () => {
@@ -38,7 +42,8 @@ export default function App() {
     checkUserLoggedIn();
   }, []); // Se ejecuta solo una vez al iniciar
 
-  function handleLogin() {
+  function handleLogin(user: User) {
+    setUser(user);
     setShowLogin(false); // Cuando el usuario se loguea, ocultamos la pantalla de login
   }
 
@@ -52,13 +57,31 @@ export default function App() {
     setShowLogin(true); // Volver al login desde el registro
   }
 
-  if (showLogin) {
-    return <Login onLogin={handleLogin} onSignup={handleSignup} />;
-  }
+  // if (showLogin) {
+  //   return <Login onLogin={handleLogin} onSignup={handleSignup} />;
+  // }
 
-  if (showSignup) {
-    return <Signup onSignup={handleSignup} onLogin={onBackToLogin} />;
-  }
+  // if (showSignup) {
+  //   return <Signup onSignup={handleSignup} onLogin={onBackToLogin} />;
+  // }
 
-  return <FirstScreen onLogout={handleLogout} />;
+  return (
+  <>
+    {showLogin ? (
+      <Login onLogin={handleLogin} onSignup={handleSignup} />
+    ) : showSignup ? (
+      <Signup onSignup={handleSignup} onLogin={onBackToLogin} />
+    ) : !user ? (
+      <></> // o un <Loading /> si prefieres
+    ) : user.rol_id == '2' ? (
+      <AdminScreen onLogout={handleLogout} user={user} />
+    ) : (
+      <FirstScreen onLogout={handleLogout} user={user} />
+    )}
+    
+    <Toast />
+  </>
+);
+
+  
 }

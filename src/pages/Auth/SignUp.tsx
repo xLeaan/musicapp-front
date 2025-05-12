@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { authService } from './auth.service';
 import { UserRegisterProps } from '../../interfaces/user';
+import Toast from 'react-native-toast-message';
 
 
 const Signup: React.FC<UserRegisterProps> = ({ onSignup, onLogin }) => {
@@ -16,16 +17,33 @@ const Signup: React.FC<UserRegisterProps> = ({ onSignup, onLogin }) => {
 
 async function handleSignup() {
     try {
-      const user = { email, nombre, apellido, contrasena, rol, foto };
+      const user = { 
+        email, 
+        nombre, 
+        apellido, 
+        contrasena, 
+        rol_id: '1', 
+        foto };
       const result = await authService(user);
-      setMessage("Registro exitoso!");
+
+      Toast.show({
+        type: 'success',
+        text1: 'Registro exitoso',
+        text2: 'Has creado tu usuario correctamente!',
+      });
+
       setIsError(false);
       console.log("registro:", user);
       onSignup(user);
       onLogin();
+
     } catch (error) {
-      setMessage('Error al registrar');
-      console.log("Error al registrar usuario:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error al registrar',
+        text2: 'Revisa los datos ingresados',
+      });
+
       setIsError(true);
     }
   }
