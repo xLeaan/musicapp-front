@@ -1,8 +1,9 @@
 export interface User {
     email: string;
     nombre?: string;
-    apellido?: string;
-    rol?: string;
+    num_documento?: string;
+    celular?: string;
+    rol_id?: string;
     contrasena: string;
     foto?: string;
 }

@@ -3,6 +3,7 @@ import { User } from '../../interfaces/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function authService(user: User) {
+  console.log("API_URL:", API_URL);
     try {
         const response = await fetch(`${API_URL}/register`, {
             method: 'POST',
@@ -12,8 +13,14 @@ export async function authService(user: User) {
             body: JSON.stringify(user),
         });
 
+
         if (!response.ok) {
+            const resText = await response.text();
+            console.log("Status:", response.status);
+            console.log("usuario:", user);
+            console.log("Body:", resText);
             throw new Error('Error en la autenticación');
+           
         }
         return await response.json();
         
