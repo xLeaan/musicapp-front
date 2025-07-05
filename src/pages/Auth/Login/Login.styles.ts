@@ -5,31 +5,32 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  containerHeader: {
-    backgroundColor: '#9E37FA',
-    flex: 1,
-    width: '100%',
-    height: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo : {
+    marginTop: 80,
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    position: 'absolute',
+  title: {
+    color: '#f7cf29',
+    fontSize: 45,
+    fontWeight: '700',
+    textAlign: 'center'
   },
-  input: {
-    width: 300,
-    height: 40,
+   input: {
+    marginTop: 20,
     borderWidth: 1,
-    borderColor: 'gray',
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
+    width: '90%',
+    borderColor: '#373737', // blanco
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 10, // completamente redondo
+    backgroundColor: 'transparent', // fondo transparente
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+},
   buttonContainer: {
     width: 300,
     borderRadius: 50,
@@ -42,7 +43,24 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   registerText: {
-    color: 'blue',
+    color: '#f7cf29',
     textDecorationLine: 'underline',
+  },
+  buttonLogin: {
+    marginTop: 20,
+    borderWidth: 1,
+    width: '80%',
+    borderColor: '#f7cf29',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 50,
+    backgroundColor: '#f7cf29',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textLogin: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

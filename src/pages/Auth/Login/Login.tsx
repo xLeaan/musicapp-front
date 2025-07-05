@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { View, TextInput, Button, Touchable, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, Button, Touchable, TouchableOpacity, Image, ScrollView } from 'react-native';
 import {StyleSheet, Text} from 'react-native';
 import { UserLoginProps } from '../../../interfaces/user';
 import { loginService } from '../auth.service';
+import { styles } from './Login.styles';
+import Toast from 'react-native-toast-message';
 
 
 const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
@@ -12,50 +14,72 @@ const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
   const [isError, setIsError] = useState(false);
   
 
-  async function handleLogin() {
-    try {
-      const user = { email, contrasena };
-      const response = await loginService(email, contrasena);
-      setMessage("Login exitoso!");
-      setIsError(false);
-      onLogin(user);
-    } catch (error) {
-      setMessage('Error al loguear');
-      console.log("Error al loguear usuario:", error);
-      setIsError(true);
-    }
+  const showToast = () => {
+        Toast.show({
+          type: 'success',
+          text1: 'Hello',
+          text2: 'This is some something 👋'
+        });
   }
 
+  async function handleLogin() {
+    try {
+      const user = await loginService(email, contrasena);
+      
+    if (user) {
+
+      Toast.show({
+            type: 'success',
+            text1: 'Login exitoso',
+            text2: 'Bienvenido/a ' + user.nombre,
+      });
+
+      setIsError(false);
+      onLogin(user); 
+    } else {
+      setMessage("Error al intentar iniciar sesión.");
+      setIsError(true);
+    }
+  } catch (error) {
+    setMessage("Error en la solicitud de login.");
+    console.log("Error:", error);
+    setIsError(true);
+  }
+}
+
+  
   return (
+    <ScrollView style={{ backgroundColor: '#000000' }}>
     <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        {/* <Image source={require('../../img/icon.jpg')} style={styles.image} /> */}
-        <Text>Ruta confiable</Text>
-      </View>
-      <View style={styles.container}>
+        <Image source={require('../../../img/logo_fondo_negro.png')} style={styles.logo} />
+        <Text style={styles.title}>Solo entra. Lo demás está cubierto.</Text>
+
       <TextInput style={styles.input} 
         placeholder="Email"
+        placeholderTextColor={'#7b7b7b'}
         value={email}
         onChangeText={setEmail} />
       <TextInput style={styles.input} 
         placeholder="Contraseña"
+        placeholderTextColor={'#7b7b7b'}
         value={contrasena}
         onChangeText={setContrasena} 
         secureTextEntry={true} />
-      <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={handleLogin} />
-      </View>
+      <Text style={{ color: 'white', marginTop: 20}}>¿Olvidaste tu contraseña?</Text>
+      <TouchableOpacity style={styles.buttonLogin} onPress={handleLogin}>
+          <Text style={styles.textLogin}>Ingresar</Text>
+      </TouchableOpacity>
       <View style={{ flexDirection: 'row', marginTop: 20}}>
-        <Text>No tienes una cuenta? </Text>
+        <Text style={{ color: 'white'}}>No tienes una cuenta? </Text>
           <TouchableOpacity onPress={onSignup}>
             <Text style={styles.registerText}>Registro</Text>
           </TouchableOpacity>
       </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
-import { styles } from './Login.styles';
+
 
 export default Login;

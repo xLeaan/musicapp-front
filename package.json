@@ -7,31 +7,30 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@mdi/js": "^7.4.47",
-    "@mdi/react": "^1.6.1",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/native": "^7.1.6",
     "axios": "^1.6.7",
-    "expo": "^49.0.23",
+    "expo": "53.0.17",
     "jsonwebtoken": "^9.0.2",
-    "react": "18.2.0",
-    "react-dom": "^18.2.0",
-    "react-native": "0.72.10",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.5",
     "react-native-dotenv": "^3.4.11",
-    "react-native-toast-message": "^2.3.3",
-    "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "~0.19.6",
-    "react-native-webview": "13.2.2"
+    "react-native-toast-message": "^2.3.0",
+    "react-native-web": "^0.20.0",
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/plugin-transform-private-methods": "^7.27.1",
     "@tsconfig/react-native": "^3.0.5",
     "@types/jest": "^29.5.5",
-    "@types/react": "^18.2.27",
+    "@types/react": "~19.0.10",
     "@types/react-native": "^0.72.3",
-    "@types/react-native-vector-icons": "^6.4.18",
     "@types/react-test-renderer": "^18.0.3",
-    "typescript": "^5.2.2"
+    "babel-preset-expo": "^13.2.3",
+    "metro-react-native-babel-preset": "^0.77.0",
+    "typescript": "~5.8.3"
   },
   "private": true
 }
