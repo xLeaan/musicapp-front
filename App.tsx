@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Asegúrate de que AsyncStorage esté importado correctamente
 import FirstScreen from './src/pages/FirstScreen';
-import AdminScreen from './src/pages/AdminScreen';
 import Login from './src/pages/Auth/Login/Login';
 import Signup from './src/pages/Auth/SignUp/SignUp';
-import  Bienvenida from './src/pages/Bienvenida/Bienvenida';
 import { User } from './src/interfaces/user'; 
 import Toast from 'react-native-toast-message';
 
@@ -80,7 +78,7 @@ export default function App() {
     setShowLogin(true); // Volver al login desde el registro
   }
 
-  if (primeraVez) return <Bienvenida onContinue={showLoginScreen} onRegister={showRegisterScreen} />;
+  if (primeraVez) return <Login onLogin={handleLogin} onSignup={handleSignup} />;
 
 
   // if (showLogin) {
@@ -99,8 +97,6 @@ export default function App() {
       <Signup onSignup={handleSignup} onLogin={onBackToLogin} />
     ) : !user ? (
       <></> // o un <Loading /> si prefieres
-    ) : user.rol_id == '2' ? (
-      <AdminScreen onLogout={handleLogout} user={user} />
     ) : (
       <FirstScreen onLogout={handleLogout} user={user} />
     )}

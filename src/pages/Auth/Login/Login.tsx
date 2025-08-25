@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, TextInput, Button, Touchable, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, TextInput, Button, Touchable, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
 import {StyleSheet, Text} from 'react-native';
 import { UserLoginProps } from '../../../interfaces/user';
 import { loginService } from '../auth.service';
 import { styles } from './Login.styles';
 import Toast from 'react-native-toast-message';
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
 
 const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
@@ -49,7 +50,12 @@ const Login: React.FC<UserLoginProps> = ({ onLogin, onSignup }) => {
 
   
   return (
-    <ScrollView style={{ backgroundColor: '#000000' }}>
+      
+      
+    <ScrollView style={{ backgroundColor: '#ADADAD' }}>
+     <View style={{ height: 60, backgroundColor: '#020FAB', justifyContent: 'center', paddingHorizontal: 15 }}>
+    <Text style={{ color: 'white', fontSize: 20 }}>Musicapp</Text>
+  </View>
     <View style={styles.container}>
         <Image source={require('../../../img/logo_fondo_negro.png')} style={styles.logo} />
         <Text style={styles.title}>Solo entra. Lo demás está cubierto.</Text>
