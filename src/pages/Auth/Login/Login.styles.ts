@@ -5,9 +5,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 30
   },
   logo : {
     marginTop: 80,
@@ -18,19 +16,40 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center'
   },
-   input: {
+  viewInput: {
+    flexDirection: 'row', 
     marginTop: 20,
-    borderWidth: 1,
-    width: '90%',
-    borderColor: '#373737', // blanco
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 10, // completamente redondo
-    backgroundColor: 'transparent', // fondo transparente
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-},
+   backgroundColor: "#C0C0C0", // gris clásico Windows
+  padding: 2,
+
+  borderTopWidth: 2,
+  borderLeftWidth: 2,
+  borderBottomWidth: 2,
+  borderRightWidth: 2,
+
+  borderTopColor: "#FFFFFF",   // blanco arriba
+  borderLeftColor: "#FFFFFF",  // blanco izquierda
+  borderBottomColor: "#808080",// gris abajo
+  borderRightColor: "#808080",
+  },
+  input: {
+    backgroundColor: "white",
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        width: 130,
+        fontSize: 14,
+        color: "black",
+
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderBottomWidth: 1,
+        borderRightWidth: 1,
+
+        borderTopColor: "#000000",   // negro interior arriba
+        borderLeftColor: "#494444ff",  // negro interior izquierda
+        borderBottomColor: "#808080",// gris interior abajo
+        borderRightColor: "#808080",   // gris derecha
+  },
   buttonContainer: {
     width: 300,
     borderRadius: 50,

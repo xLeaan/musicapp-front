@@ -20,7 +20,8 @@
     "react-native-safe-area-context": "^5.6.1",
     "react-native-toast-message": "^2.3.0",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "expo-font": "~13.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
